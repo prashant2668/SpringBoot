@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+<!-- Account Bean -->
+	<bean class="com.p1.Account" id="account">
+		<property name="accno" value="101" />
+		<property name="name" value="Manisha K" />
+		<property name="balance" value="120000" />
+	</bean>
+	<!-- Definition for logging aspect -->
+	<bean id="logging" class="com.p1.Logging" />
+<aop:config  proxy-target-class="true">
+		<aop:aspect id="log" ref="logging">
+<!-- def of point cut
+ -->
+<aop:pointcut id="selectAll" 
+expression="execution(* com.p1.Account.*(..))" />
+			
+		<aop:before pointcut-ref="selectAll" method="beforeAdvice" />
+		
+			<aop:after pointcut-ref="selectAll" method="afterAdvice" />
+			
+			<aop:after-returning pointcut-ref="selectAll" returning="retVal" method="afterReturningAdvice" />
+			
+			<aop:after-throwing pointcut-ref="selectAll" 
+			throwing="ex" method="AfterThrowingAdvice" />
+		
+		</aop:aspect>
+	</aop:config>
+
+
+
+</beans>
